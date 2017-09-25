@@ -7,7 +7,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/time.h>
+#include <sys/wait.h>
+#include <time.h>
 
 int main()
 {
@@ -44,16 +45,11 @@ int main()
 
     default:
 	printf("");
-        struct timeval start, stop; /* struct timeval {long tv_sec; long tv_usec;};
-                                       tv_usec -> микросекунды
-                                       tv_sec -> секунды */
-        gettimeofday(&start, NULL);
+        float t = clock();
 
         waitpid(pid, &status, 0);
-
-        gettimeofday(&stop, NULL);
-        
-	printf("Waiting time:%lu\n", stop.tv_usec - start.tv_usec);
+	
+	printf ("Waiting time: %f%s", t / CLOCKS_PER_SEC , " seconds\n");
 	break;
     }
     return 0;
