@@ -20,7 +20,7 @@ int main()
     {
     case -1:
         perror ("fork"); //ошибка
-        return 0;
+        exit(1);
 
     case 0:
         if ((file = fopen("test.txt", "w")) == NULL)
@@ -41,7 +41,7 @@ int main()
         fwrite (data, sizeof(char), size, file);
         free(data);
         fclose(file);
-        break;
+        exit(status);
 
     default:
 	printf("");
