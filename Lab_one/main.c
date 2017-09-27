@@ -35,11 +35,11 @@ int main()
         fprintf (file, "Child pid: %d\nPid of my parent: %d\n\n", cpid, ppid);
 
         const int size = 10 * 1024 * 1024;
-        char *data = NULL;
-        data = (char* ) malloc(size);
-
-        fwrite (data, sizeof(char), size, file);
-        free(data);
+        char data = '0';
+        
+	for (int i = 0; i < size; i++)
+		fwrite(&data, sizeof(char), 1, file);
+	
         fclose(file);
         exit(status);
 
