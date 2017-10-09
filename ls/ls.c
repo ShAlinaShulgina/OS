@@ -29,27 +29,27 @@ int main()
             strftime(time, 40, "%b %d %H:%M", localtime(&(st.st_mtime)));
             
             //разрешение файлов
-            printf("%s", (S_ISDIR(st.st_mode)) ? "d" : "-");
-            printf("%s", (st.st_mode & S_IRUSR) ? "r" : "-");
-            printf("%s", (st.st_mode & S_IWUSR) ? "w" : "-");
-            printf("%s", (st.st_mode & S_IXUSR) ? "x" : "-");
-            printf("%s", (st.st_mode & S_IRGRP) ? "r" : "-");
-            printf("%s", (st.st_mode & S_IWGRP) ? "w" : "-");
-            printf("%s", (st.st_mode & S_IXGRP) ? "x" : "-");
-            printf("%s", (st.st_mode & S_IROTH) ? "r" : "-");
-            printf("%s", (st.st_mode & S_IWOTH) ? "w" : "-");
-            printf("%s", (st.st_mode & S_IXOTH) ? "x" : "-");
+            printf("%s%s%s%s%s%s%s%s%s%s %d %5s %5s %5lld %5s %s\n", (S_ISDIR(st.st_mode)) ? "d" : "-",
+                    (st.st_mode & S_IRUSR) ? "r" : "-",
+                    (st.st_mode & S_IWUSR) ? "w" : "-",
+                    (st.st_mode & S_IXUSR) ? "x" : "-",
+                    (st.st_mode & S_IRGRP) ? "r" : "-",
+                    (st.st_mode & S_IWGRP) ? "w" : "-",
+                    (st.st_mode & S_IXGRP) ? "x" : "-",
+                    (st.st_mode & S_IROTH) ? "r" : "-",
+                    (st.st_mode & S_IWOTH) ? "w" : "-",
+                    (st.st_mode & S_IXOTH) ? "x" : "-",
             //количество ссылок
-            printf(" %d  ", st.st_nlink);
+                    st.st_nlink,
             //Имя и группа владельца
-            printf("%5s  ", pw->pw_name);
-            printf("%5s  ", gr->gr_name);
+                    pw->pw_name,
+                    gr->gr_name,
             //размер файла
-            printf("%5lld  ", st.st_size);
+                    st.st_size,
             //время последней модификации
-            printf("%5s  ", time);
+                    time,
             //имя файла
-            printf("%s\n", entry->d_name);
+                    entry->d_name);
         }
         else
         {
