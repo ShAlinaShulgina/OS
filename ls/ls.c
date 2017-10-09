@@ -45,7 +45,7 @@ int main()
             printf("%5s  ", pw->pw_name);
             printf("%5s  ", gr->gr_name);
             //размер файла
-            printf("%5d  ", st.st_size);
+            printf("%5lld  ", st.st_size);
             //время последней модификации
             printf("%5s  ", time);
             //имя файла
