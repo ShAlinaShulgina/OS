@@ -19,7 +19,7 @@ int main()
     if (dir)
         while ((entry = readdir(dir)) != NULL)
         {
-            uid_t uid = getuid(), euid = geteuid();
+            uid_t uid = getuid();
             struct group *gr = getgrgid(uid);
             struct passwd *pw = getpwuid(uid);
             
