@@ -38,11 +38,8 @@
 void print(char *format, ...)
 {
     char *p; //для va_list
-    size_t size = strlen(format);
-    if (size < 1024) 
-    	size = 1024;
     char ch, *s, str[10]; //для символа, '%s', itoa и 'c'
-    char buff[size]; //для итоговой строки
+    char buff[1024]; //для итоговой строки
     int in = 0, j = 0;
     double d = 0;
     va_list args;
@@ -108,8 +105,23 @@ int main()
     stat(filename, &st);
     long long size = st.st_size;
     char file[size];
-    read(fd, file, size);
-    print(file);
+    if(size > 1024)
+    {
+    	int  j = 0, count = (int)(size / 1024) - 1;
+    	for(int i = 0; i < count; i++)
+    	{
+    		read(fd, file, 1024);
+    		long long int l = lseek(fd,  j += 1024, SEEK_SET);
+    		print(file);	
+   		}
+   		read(fd, file, size - 1024 * count);
+   		printf(file);
+   	}
+   	else
+   	{
+   		read(fd, file, size);
+   		print(file);
+   	}
     print("\n");
     close(fd);
     return 0;
