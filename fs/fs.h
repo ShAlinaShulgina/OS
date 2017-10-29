@@ -109,18 +109,21 @@ void find_file(char name[])
 			{
 				printf("Файл найден.\n");
             	write(1, mass, inf.size);
+				free(mass);
             	close(fd);
             	return;
             }
             else if (inf.del == '~')
             {
             	printf("Файл удален.\n");
-            	close(fd);
+				free(mass);            	
+				close(fd);
             	return;	
             }
 		}
 		lseek(fd, sizeof(int) + sizeof(int) + t - 2, SEEK_SET);
 		t += sizeof(int) + sizeof(int) - 2;
+		free(mass);
 	}
 	printf("Файл не найден.\n");
 	close(fd);
