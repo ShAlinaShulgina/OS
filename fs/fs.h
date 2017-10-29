@@ -31,7 +31,7 @@ void add_file(char name[])
 	struct info inf;
 	inf.del = '*';	    
 	strncpy(inf.file_name, name, strlen(name)); //имя файла
-    inf.size_name_file = strlen(name);
+    	inf.size_name_file = strlen(name);
 	int fd = open(name, O_RDWR, O_EXCL);
     if (fd < 0)
     {
@@ -52,11 +52,11 @@ void add_file(char name[])
     write(newfd, &inf.del, sizeof(char)); //файл на удалении или нет
     
     sprintf(buff, "%d", inf.size_name_file);
-	write(newfd, buff, strlen(buff)); //длина имени файла
+    write(newfd, buff, strlen(buff)); //длина имени файла
+    
+    write(newfd, inf.file_name, strlen(name)); //имя файла
 	
-	write(newfd, inf.file_name, strlen(name)); //имя файла
-	
-	sprintf(buff, "%ld", inf.size);
+    sprintf(buff, "%ld", inf.size);
     write(newfd, buff, strlen(buff)); //размер содержимого файла
     
     write(newfd, mass, inf.size); //содержимое файла
@@ -67,7 +67,7 @@ void add_file(char name[])
 
 void find_file(char name[])
 {
-	int fd = open(fs, O_RDWR, O_EXCL);
+    int fd = open(fs, O_RDWR, O_EXCL);
     if (fd < 0)
     {
         perror("open");
@@ -108,18 +108,18 @@ void find_file(char name[])
 			if (inf.del == '*')
 			{
 				printf("Файл найден.\n");
-            	write(1, mass, inf.size);
+            			write(1, mass, inf.size);
 				free(mass);
-            	close(fd);
-            	return;
-            }
-            else if (inf.del == '~')
-            {
-            	printf("Файл удален.\n");
+            			close(fd);
+            			return;
+            		}
+            		else if (inf.del == '~')
+            		{
+            			printf("Файл удален.\n");
 				free(mass);            	
 				close(fd);
-            	return;	
-            }
+            			return;	
+            		}
 		}
 		lseek(fd, sizeof(int) + sizeof(int) + t - 2, SEEK_SET);
 		t += sizeof(int) + sizeof(int) - 2;
@@ -131,7 +131,7 @@ void find_file(char name[])
 
 void get_list()
 {
-	int fd = open(fs, O_RDWR, O_EXCL);
+    int fd = open(fs, O_RDWR, O_EXCL);
     if (fd < 0)
     {
         perror("open");
@@ -173,7 +173,7 @@ void get_list()
 
 void deleted(char name[])
 {
-	int fd = open(fs, O_RDWR, O_EXCL);
+    int fd = open(fs, O_RDWR, O_EXCL);
     if (fd < 0)
     {
         perror("open");
