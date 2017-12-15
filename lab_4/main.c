@@ -36,6 +36,7 @@ void signal_(int sig)
 void *write_thr(void *p)
 {
 	pthread_t id =  pthread_self();
+    int threadid = *((int *) id);
 	while(1)
 	{
 		sleep(1);
@@ -43,8 +44,8 @@ void *write_thr(void *p)
 		time_t timer = time(NULL);
     	struct tm* aTm = localtime(&timer);
 
-		sprintf(shm, "THREAD_ID - %ld -> %02d:%02d:%02d\n", id, aTm->tm_hour, aTm->tm_min, aTm->tm_sec);
-		printf("-> THREAD_ID - %ld -> %02d:%02d:%02d\n", id, aTm->tm_hour, aTm->tm_min, aTm->tm_sec);
+		sprintf(shm, "THREAD_ID - %d -> %02d:%02d:%02d\n", threadid, aTm->tm_hour, aTm->tm_min, aTm->tm_sec);
+		printf("-> THREAD_ID - %d -> %02d:%02d:%02d\n", threadid, aTm->tm_hour, aTm->tm_min, aTm->tm_sec);
 		sleep(2);
 		pthread_mutex_unlock(&mutex);	
 	}
