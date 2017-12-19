@@ -22,14 +22,17 @@ short flag = 1;
 
 void signal_(int sig)
 {
-	if (sig == SIGINT)
-	{
-		//отсоединение 
- 		shmdt(shm);
- 		if(flag == 0)
-    		shmctl(shmid, IPC_RMID, NULL);
-
-    	exit(0);
+    if (sig == SIGINT)
+    {
+        //отсоединение 
+        shmdt(shm);
+        if (flag == 1)
+        {
+            int r;
+            if ((r = shmctl(shmid, IPC_RMID, NULL)) < 0)
+               printf("error\n");
+        }
+    exit(0);    
     }
 }
 
@@ -74,7 +77,7 @@ int main(int argc, char *argv[])
 	char pathname[] = "text";
 	key_t key;
 
-	if((key = ftok(pathname,0)) < 0)
+	if((key = ftok(pathname, 1)) < 0)
 	{
         printf("Ключ не сгенерирован\n");
         exit(-1);
@@ -107,7 +110,7 @@ int main(int argc, char *argv[])
     int st;
     int id[6];
 
-    if (flag == 1)
+    if (flag)
     {
     	printf("write\n");
     	for(int i = 0; i < 6; i++)
