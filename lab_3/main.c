@@ -24,10 +24,13 @@ void signal_(int sig)
 	{
 		//отсоединение 
  		shmdt(shm);
- 		if(flag == 0)
-    		shmctl(shmid, IPC_RMID, NULL);
-
-    	exit(0);
+        if (flag == 1)
+        {
+            int r;
+            if ((r = shmctl(shmid, IPC_RMID, NULL)) < 0)
+               printf("error\n");
+    	}
+    exit(0);    
     }
 }
 
@@ -38,7 +41,7 @@ int main(int argc, char *argv[])
 	char pathname[] = "text";
 	key_t key;
 
-	if((key = ftok(pathname,0)) < 0)
+	if((key = ftok(pathname, 1)) < 0)
 	{
         printf("Ключ не сгенерирован\n");
         exit(-1);
@@ -48,7 +51,7 @@ int main(int argc, char *argv[])
     //создание сегмента разделяемой памяти, 128 байт, 0666 - чтение и запись разрешены для всех
     if((shmid = shmget(key, 128, 0666 | IPC_CREAT | IPC_EXCL)) < 0)
     {
-    	//EEXIST если значение IPC_CREAT | IPC_EXCL было указано, а сегмент уже существует.
+        //EEXIST если значение IPC_CREAT | IPC_EXCL было указано, а сегмент уже существует.
     	if(errno == EEXIST)
     	{
     		printf("Сегмент существует\n");
@@ -69,7 +72,7 @@ int main(int argc, char *argv[])
     	exit(-1);
     }
 	
-    if (flag == 1)
+    if (flag)
     {
     	printf("write\n");
     	while(1)
@@ -88,7 +91,7 @@ int main(int argc, char *argv[])
     	while(1)
     	{
     		sleep(1);
-    		printf("%s", shm);
+    		printf(":%s\n", shm);
     	}
     }
 
