@@ -27,10 +27,13 @@ void signal_(int sig)
 	{
 		//отсоединение 
  		shmdt(shm);
- 		if(flag == 0)
-    		shmctl(shmid, IPC_RMID, NULL);
-
-    	exit(0);
+        if (flag == 1)
+        {
+            int r;
+            if ((r = shmctl(shmid, IPC_RMID, NULL)) < 0)
+               printf("error\n");
+    	}
+    exit(0);    
     }
 }
 
@@ -75,7 +78,7 @@ int main(int argc, char *argv[])
 	char pathname[] = "text";
 	key_t key;
 
-	if((key = ftok(pathname,0)) < 0)
+	if((key = ftok(pathname, 1)) < 0)
 	{
         printf("Ключ не сгенерирован\n");
         exit(-1);
@@ -89,12 +92,12 @@ int main(int argc, char *argv[])
     	if(errno == EEXIST)
     	{
     		printf("Сегмент существует\n");
+    		flag = 0;
     		if((shmid = shmget(key, 128, 0)) < 0)
     		{
     			printf("Невозможно найти shared memory\n");
     			exit(-1);
     		}
-    		flag = 0;
     	}
     }
 	
@@ -104,29 +107,29 @@ int main(int argc, char *argv[])
     	exit(-1);
     }
 
-	pthread_t thread[6];
+	pthread_t thread[4];
     int st;
 
-    if (flag == 1)
+    if (flag)
     {
     	printf("write\n");
-    	for(int i = 0; i < 6; i++)
+    	for(int i = 0; i < 4; i++)
     	{
     		st = pthread_create(&(thread[i]), NULL, write_thr, NULL);
 
     	}
-   		
     }
-    else
+    
+    else 
     {
     	printf("read\n");
-    	for(int i = 0; i < 6; i++)
+    	for(int i = 0; i < 4; i++)
     	{
-    		st = pthread_create(&(thread[i]), NULL, read_thr, NULL);
+   			st = pthread_create(&(thread[i]), NULL, read_thr, NULL);
     	}
     }
     
-	for(int i = 0; i < 6; i++)
+	for(int i = 0; i < 4; i++)
     	pthread_join(thread[i], NULL);
 	return 0;
 }
