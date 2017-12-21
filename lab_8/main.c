@@ -42,15 +42,17 @@ int main()
 	struct stat st;
 	//(не удалось получить информацию о файле)
 	//При успешном заполнении структуры stat возвращается 0. В случае неудачи возвращается —1
-	if (stat(name_fifo, &st) != 0)
+	if (stat(name_fifo, &st) ==  -1)
 	{
-		flag = 0;
+		flag = 1;
   		if(mkfifo(name_fifo, 0666) < 0)
   		{
   			printf("Ошибка при создании FIFO\n");
 			exit(0);
   		}
 	}
+	else
+		flag = 0;
 
 	int i = 0;
   	if (flag == 1)
