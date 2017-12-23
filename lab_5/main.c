@@ -94,9 +94,9 @@ int main(int argc, char *argv[])
 
 		while (1)
 		{
-			sem.sem_op = -1;
-			if (semop(semid, &sem, 1) == -1)
-				perror("semop");
+			//sem.sem_op = -1;
+			//if (semop(semid, &sem, 1) == -1)
+			//	perror("semop");
 
 			sleep(1);
     		time_t timer = time(NULL);
@@ -124,8 +124,8 @@ int main(int argc, char *argv[])
 			if (semop(semid, &sem, 1) == -1)
 				perror("semop");
 			printf("%s\n", shm);
-			sem.sem_op = 1;
-			semop(semid, &sem, 1);
+			//sem.sem_op = 1;
+			//semop(semid, &sem, 1);
 		}
     }
     return 0;
